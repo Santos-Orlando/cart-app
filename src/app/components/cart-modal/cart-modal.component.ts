@@ -10,9 +10,9 @@ import { CartComponent } from '../cart/cart.component';
 })
 export class CartModalComponent {
 
-  @Input() items: CartItem[] = []; 
-  @Input() total: number = 0;
+  @Input() items: CartItem[] = [];
 
+  // @Input() total: number = 0;
 
   @Output() closeEventEmitter : EventEmitter<boolean> = new EventEmitter();
 
