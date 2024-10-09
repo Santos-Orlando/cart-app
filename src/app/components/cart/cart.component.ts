@@ -11,6 +11,8 @@ export class CartComponent {
 
   @Input() items: CartItem[] = [];
 
+  @Input() total: number = 0;
+
   @Output() idProductEventEmitter : EventEmitter<number> = new EventEmitter();
 
   onDeleteCart(id: number){
