@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../../services/product.service';
 import { CatalogComponent } from "../catalog/catalog.component";
 import { CartItem } from '../../models/cartitem';
 import { NavbarComponent } from '../navbar/navbar.component';
@@ -20,8 +19,6 @@ export class CartAppComponent implements OnInit{
 
   items: CartItem[] = [];
 
-  total!: number; 
-
   showCart : boolean = false;
 
   constructor(private store: Store<{items: ItemState}>,
@@ -29,7 +26,6 @@ export class CartAppComponent implements OnInit{
               private router: Router){
                 this.store.select('items').subscribe(state => {
                   this.items = state.items;
-                  this.total = state.total;
                   this.saveSession();
                   console.log('cambio el estado');
                 })
@@ -42,17 +38,10 @@ export class CartAppComponent implements OnInit{
 
   addProduct(){
     this.sharingDataService.addProductEventEmitter.subscribe(product => {
-      
       this.store.dispatch(add({product: product}))
       this.store.dispatch(total());
-      
-      // this.saveSession();
-      this.router.navigate(['/cart'], {
-        state: {
-          items : this.items,
-          total: this.total
-        }
-      });
+      this.router.navigate(['/cart']);
+
       Swal.fire({
         title: "Shopping",
         text: "¡Nuevo producto agregado al carro!",
@@ -74,19 +63,9 @@ export class CartAppComponent implements OnInit{
         confirmButtonText: "¡Si, eliminarlo!"
       }).then((result) => {
         if (result.isConfirmed) {
-          
           this.store.dispatch(remove({id: id}));
           this.store.dispatch(total());
-          // this.saveSession();
-
-          this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>{
-            this.router.navigate(['/cart'], {
-              state: {
-                items : this.items,
-                total: this.total
-              }
-            });
-          })
+          this.router.navigate(['/cart']);
 
           Swal.fire({
             title: "¡Eliminado!",
