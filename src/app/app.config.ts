@@ -7,11 +7,12 @@ import { itemReducer } from './store/items.reducer';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { productsReducer } from './store/products.reducer';
 import { provideEffects } from '@ngrx/effects';
+import { ProductEffects } from './store/effects/products.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes), 
         provideStore({items: itemReducer, products: productsReducer}), 
         provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }), 
-        provideEffects()]
+        provideEffects(ProductEffects)]
 };
