@@ -4,12 +4,13 @@ import { Product } from '../../models/product';
 import { CatalogComponent } from "../catalog/catalog.component";
 import { CartItem } from '../../models/cartitem';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { RouterOutlet } from '@angular/router';
 
 
 @Component({
   selector: 'cart-app',
   standalone: true,
-  imports: [CatalogComponent, NavbarComponent],
+  imports: [CatalogComponent, NavbarComponent, RouterOutlet],
   templateUrl: './cart-app.component.html'
 })
 export class CartAppComponent implements OnInit{
