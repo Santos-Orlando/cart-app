@@ -6,6 +6,9 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { Router, RouterOutlet } from '@angular/router';
 import { SharingDataService } from '../../services/sharing-data.service';
 import Swal from 'sweetalert2'
+import { Store } from '@ngrx/store';
+import { ItemState } from '../../store/items.reducer';
+import { add, remove, total } from '../../store/items.actions';
 
 @Component({
   selector: 'cart-app',
@@ -17,18 +20,20 @@ export class CartAppComponent implements OnInit{
 
   items: CartItem[] = [];
 
-  total: number = 0; 
+  total!: number; 
 
   showCart : boolean = false;
 
-  constructor(private sharingDataService: SharingDataService,
-              private service : ProductService,
-              private router: Router){}
+  constructor(private store: Store<{items: ItemState}>,
+              private sharingDataService: SharingDataService,
+              private router: Router){
+                this.store.select('items').subscribe(state => {
+                  this.items = state.items;
+                  this.total = state.total;
+                })
+              }
   
   ngOnInit(): void {
-    // this.items = JSON.parse(sessionStorage.getItem('cart')!) || [];
-    this.items = JSON.parse(sessionStorage.getItem('cart') || '[]') ;
-    // this.calculateTotal();
     this.onDeleteCart();
     this.addProduct();
   }
@@ -36,7 +41,9 @@ export class CartAppComponent implements OnInit{
   addProduct(){
     this.sharingDataService.addProductEventEmitter.subscribe(product => {
       
-      // this.calculateTotal(); 
+      this.store.dispatch(add({product: product}))
+      this.store.dispatch(total());
+      
       this.saveSession();
       this.router.navigate(['/cart'], {
         state: {
@@ -66,7 +73,8 @@ export class CartAppComponent implements OnInit{
       }).then((result) => {
         if (result.isConfirmed) {
           
-          // this.calculateTotal(); 
+          this.store.dispatch(remove({id: id}));
+          this.store.dispatch(total());
           this.saveSession();
 
           this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>{
@@ -85,9 +93,6 @@ export class CartAppComponent implements OnInit{
           });
         }
       });
-
-      
-      
     })
   }
 
