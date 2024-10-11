@@ -34,6 +34,7 @@ export class CartAppComponent implements OnInit{
   ngOnInit(): void {
     this.onDeleteCart();
     this.addProduct();
+    this.store.dispatch(total());
   }
 
   addProduct(){

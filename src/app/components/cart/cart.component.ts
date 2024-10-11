@@ -11,7 +11,7 @@ import { total } from '../../store/items.actions';
   imports: [],
   templateUrl: './cart.component.html'
 })
-export class CartComponent implements OnInit{
+export class CartComponent {
   
   @Input() items: CartItem[] = [];
   
@@ -23,10 +23,6 @@ export class CartComponent implements OnInit{
                     this.items = state.items;
                     this.total = state.total;
                   });
-  }
-
-  ngOnInit(): void {
-    this.store.dispatch(total());
   }
 
   onDeleteCart(id: number){
