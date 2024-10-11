@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
-import { Product } from '../../models/product';
 import { CatalogComponent } from "../catalog/catalog.component";
 import { CartItem } from '../../models/cartitem';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { Router, RouterOutlet } from '@angular/router';
 import { SharingDataService } from '../../services/sharing-data.service';
-import { skip } from 'rxjs';
-
 
 @Component({
   selector: 'cart-app',
@@ -16,8 +13,6 @@ import { skip } from 'rxjs';
   templateUrl: './cart-app.component.html'
 })
 export class CartAppComponent implements OnInit{
-
-  products : Product[] = [];
 
   items: CartItem[] = [];
 
@@ -30,7 +25,6 @@ export class CartAppComponent implements OnInit{
               private router: Router){}
   
   ngOnInit(): void {
-    this.products = this.service.findAll();
     // this.items = JSON.parse(sessionStorage.getItem('cart')!) || [];
     this.items = JSON.parse(sessionStorage.getItem('cart') || '[]') ;
     this.calculateTotal();
