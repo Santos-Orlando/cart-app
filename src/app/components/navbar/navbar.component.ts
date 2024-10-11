@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input} from '@angular/core';
 import { CartItem } from '../../models/cartitem';
 
 @Component({
@@ -10,10 +10,5 @@ import { CartItem } from '../../models/cartitem';
 export class NavbarComponent {
 
   @Input() items!: CartItem[];
-
-  @Output() openEventEmitter : EventEmitter<boolean> = new EventEmitter();
-
-  openCart(): void{
-    this.openEventEmitter.emit();
-  }
+  
 }
