@@ -1,7 +1,9 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CartItem } from '../../models/cartitem';
-import { Router } from '@angular/router';
 import { SharingDataService } from '../../services/sharing-data.service';
+import { Store } from '@ngrx/store';
+import { ItemState } from '../../store/items.reducer';
+import { total } from '../../store/items.actions';
 
 @Component({
   selector: 'cart',
@@ -9,15 +11,22 @@ import { SharingDataService } from '../../services/sharing-data.service';
   imports: [],
   templateUrl: './cart.component.html'
 })
-export class CartComponent {
+export class CartComponent implements OnInit{
   
   @Input() items: CartItem[] = [];
   
   total: number = 0;
 
-  constructor(private sharingDataService: SharingDataService, private router: Router){
-    this.items = this.router.getCurrentNavigation()?.extras.state!['items'];
-    this.total = this.router.getCurrentNavigation()?.extras.state!['total'];
+  constructor(private sharingDataService: SharingDataService, 
+              private store: Store<{items: ItemState}>){
+                this.store.select('items').subscribe(state =>{
+                    this.items = state.items;
+                    this.total = state.total;
+                  });
+  }
+
+  ngOnInit(): void {
+    this.store.dispatch(total());
   }
 
   onDeleteCart(id: number){
