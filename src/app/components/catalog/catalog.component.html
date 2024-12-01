@@ -1,7 +1,9 @@
 <h4>Catalogo de Productos</h4>
 <div class="row">
     @for (product of products; track $index){
-        <div product-card [product]="product" class="col-4 my-2" 
+        <div product-card   [product]="product"  
+                            [base64Image]="base64Images[product.id]"
+                            class="col-4 my-2"
         (addProductEventEmitter)="addProduct($event)"></div>
     }
 </div>
