@@ -3,4 +3,7 @@ export class Product{
     name: string = '';
     description: string = '';
     price: number = 0;
+    imageUrl: string = "";
+    discount: number = 0;
+    favorite: boolean = false;
 }
